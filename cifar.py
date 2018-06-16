@@ -225,6 +225,10 @@ def main():
             }, is_best, checkpoint=args.checkpoint)
 
     logger.close()
+    
+    PATH = os.path.join(checkpoint, "model-temp{}-{}".format(args.temp, time.time()))
+    torch.save(model.state_dict(), PATH)
+
     # logger.plot()
     savefig(os.path.join(args.checkpoint, 'log.eps'))
 

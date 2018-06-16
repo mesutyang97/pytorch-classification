@@ -225,7 +225,7 @@ def main():
             }, is_best, checkpoint=args.checkpoint)
 
     logger.close()
-    logger.plot()
+    # logger.plot()
     savefig(os.path.join(args.checkpoint, 'log.eps'))
 
     print('Best acc:')

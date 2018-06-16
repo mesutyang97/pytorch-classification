@@ -191,7 +191,7 @@ def main():
         optimizer.load_state_dict(checkpoint['optimizer'])
         logger = Logger(os.path.join(args.checkpoint, 'log.txt'), title=title, resume=True)
     else:
-        logger = Logger(os.path.join(args.checkpoint, 'log-temp{}-{}.txt'.format(args.temp, time.time())), title=title)
+        logger = Logger(os.path.join(args.checkpoint, 'log-temp{}-{}-{}.txt'.format(args.temp, args.dataset, time.time())), title=title)
         logger.set_names(['Learning Rate', 'Train Loss', 'Valid Loss', 'Train Acc.', 'Valid Acc.'])
 
 
@@ -226,7 +226,7 @@ def main():
 
     logger.close()
     
-    PATH = os.path.join(args.checkpoint, "model-temp{}-{}.pth".format(args.temp, time.time()))
+    PATH = os.path.join(args.checkpoint, "model-temp{}-{}-{}.pth".format(args.temp, args.dataset, time.time()))
     torch.save(model.state_dict(), PATH)
 
     # logger.plot()

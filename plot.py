@@ -9,8 +9,8 @@ import argparse
 import time
 import matplotlib.pyplot as plt
 
-# Base_PATH = "../code/ts/cifar/checkpoints/"
-Base_PATH = "checkpoints/{}/{}_{}/log.txt"
+Base_PATH = "../code/ts/cifar/checkpoints/"
+# Base_PATH = "checkpoints/{}/{}_{}/log.txt"
 Graph_PATH = "graph"
 TEMPS = [0.1, 0.3, 1, 3, 10, 30]
 

@@ -8,6 +8,7 @@ dev
 monitor.py
 exp
 *.png
+graph
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

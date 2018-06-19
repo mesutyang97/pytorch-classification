@@ -9,8 +9,8 @@ import argparse
 import time
 import matplotlib.pyplot as plt
 
-Base_PATH = "../code/ts/cifar/checkpoints/"
-# Base_PATH = "checkpoints/{}/{}_{}/log.txt"
+# Base_PATH = "../code/ts/cifar/checkpoints/"
+Base_PATH = "checkpoints/{}/{}_{}/log.txt"
 Graph_PATH = "graph"
 TEMPS = [0.1, 0.3, 1, 3, 10, 30]
 
@@ -25,6 +25,34 @@ parser.add_argument('-d', '--dataset', default='cifar10', type=str)
 parser.add_argument('--arch', '-a', default='vgg19_bn', type=str)
 
 args = parser.parse_args()
+
+
+def trainingCurve(dataset, arch):
+	plt.figure(figsize=(18, 8))
+	plt.title('{} {} training curve with different temps'.format(
+        dataset, arch))
+	plt.xlabel("Epochs")
+	plt.ylabel("Error (%)")
+	for i, temp in enumerate(TEMPS):
+		with open(Base_PATH.format(dataset, arch, temp)) as f:
+			lines = (line.rstrip() for line in f)
+			Data = np.loadtxt(lines, delimiter='\t', skiprows=1).transpose()
+			train_error = np.subtract(100, Data[3])
+			vali_error = np.subtract(100, Data[4])
+			trainsize = len(train_error)
+
+			plt.plot(range(trainsize), train_error, ':', color=COLORS[i],
+	             label="Training error with temp {}".format(temp))
+
+			plt.plot(range(trainsize), vali_error, '-', color=COLORS[i],
+	             label="vali_error error with temp {}".format(temp))
+
+	filename = 'training_curve-{}-{}-{}.png'.format(
+        dataset, arch, time.time())
+	plt.legend(loc="best")
+	plt.savefig(filename)
+
+
 
 def errorCurve(dataset, arch, trainsize):
 	plt.figure(figsize=(8, 8))
@@ -54,15 +82,46 @@ def errorCurve(dataset, arch, trainsize):
 	axes = plt.gca()
 	axes.set_ylim([0,30])
 	filename = 'final_error-{}-{}-{}.png'.format(
-        dataset,arch, time.time())
+        dataset, arch, time.time())
 	plt.legend(loc="best")
 	plt.savefig(filename)
+
+
+
+def trainingCurveZoomed(dataset, arch):
+	plt.figure(figsize=(18, 8))
+	plt.title('{} {} training curve with different temps, Zoomed'.format(
+        dataset, arch))
+	plt.xlabel("Epochs")
+	plt.ylabel("Error (%)")
+	for i, temp in enumerate(TEMPS):
+		with open(Base_PATH.format(dataset, arch, temp)) as f:
+			lines = (line.rstrip() for line in f)
+			Data = np.loadtxt(lines, delimiter='\t', skiprows=1).transpose()
+			train_error = np.subtract(100, Data[3])
+			vali_error = np.subtract(100, Data[4])
+			trainsize = len(train_error)
+
+			plt.plot(range(trainsize), train_error, ':', color=COLORS[i],
+	             label="Training error with temp {}".format(temp))
+
+			plt.plot(range(trainsize), vali_error, '-', color=COLORS[i],
+	             label="vali_error error with temp {}".format(temp))
+
+	filename = 'training_curve_zoommed-{}-{}-{}.png'.format(
+        dataset, arch, time.time())
+	axes = plt.gca()
+	axes.set_ylim([0,30])
+	plt.legend(loc="best")
+	plt.savefig(filename)
+
 def main():
-	# trainingCurve()
 	trainsize = 164
 	if args.arch == 'densenet-bc-100-12':
 		trainsize = 300
-	errorCurve(args.dataset, args.arch, trainsize)
+	#errorCurve(args.dataset, args.arch, trainsize)
+	#trainingCurve(args.dataset, args.arch)
+	trainingCurveZoomed(args.dataset, args.arch)
 
 if __name__ == '__main__':
     main()

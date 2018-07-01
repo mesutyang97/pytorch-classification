@@ -33,7 +33,7 @@ class VGG(nn.Module):
         x = self.features(x)
         x = x.view(x.size(0), -1)
         x = self.classifier(x)
-        x = x/self.temp
+        # x = x/self.temp
         return x
 
     def _initialize_weights(self):
@@ -48,7 +48,9 @@ class VGG(nn.Module):
                 m.bias.data.zero_()
             elif isinstance(m, nn.Linear):
                 n = m.weight.size(1)
-                m.weight.data.normal_(0, 0.01)
+                # m.weight.data.normal_(0, 0.01)
+                # Testing, scaling initialization
+                m.weight.data.normal_(0, 0.01 / (self.temp * self.temp))
                 m.bias.data.zero_()
 
 

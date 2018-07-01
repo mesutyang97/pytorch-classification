@@ -191,7 +191,7 @@ def main():
         optimizer.load_state_dict(checkpoint['optimizer'])
         logger = Logger(os.path.join(args.checkpoint, 'log.txt'), title=title, resume=True)
     else:
-        logger = Logger(os.path.join(args.checkpoint, 'log-temp{}-{}-{}.txt'.format(args.temp, args.dataset, time.time())), title=title)
+        logger = Logger(os.path.join(args.checkpoint, 'log-initScale.txt', title=title))
         logger.set_names(['Learning Rate', 'Train Loss', 'Valid Loss', 'Train Acc.', 'Valid Acc.'])
 
 

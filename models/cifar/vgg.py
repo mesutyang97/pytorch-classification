@@ -26,8 +26,9 @@ class VGG(nn.Module):
         super(VGG, self).__init__()
         self.features = features
         self.classifier = nn.Linear(512, num_classes)
-        self._initialize_weights()
         self.temp = temp
+        self._initialize_weights()
+
 
     def forward(self, x):
         x = self.features(x)

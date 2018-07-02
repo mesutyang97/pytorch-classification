@@ -326,8 +326,8 @@ def test(testloader, model, criterion, epoch, use_cuda):
         maxConfidence = np.zeros(len(outputsdata))
         np.amax(outputsdata, out = maxConfidence, axis = 1)
         print ("maxConfidence", len(maxConfidence))
-        bins_0 = numpy.linspace(0, 0.001, 1)
-        counts = numpy.histogram(maxConfidence, bins_0)
+        bins_0 = np.linspace(0, 0.001, 1)
+        counts = np.histogram(maxConfidence, bins_0)
 
         if epoch == 2:
             plt.hist(maxConfidence, bins=bins_0)

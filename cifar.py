@@ -318,12 +318,13 @@ def test(testloader, model, criterion, epoch, use_cuda):
         # compute output
         outputs = model(inputs)
         # Experiment:
+        outputsdata = output.data.numpy()
         print("Hey")
-        print(outputs.data[0])
-        print("Result length", len(outputs.data[0]))
-        print ("Output length", len(outputs.data))
-        maxConfidence = np.zeros(len(outputs.data))
-        np.amax(outputs.data, out = maxConfidence, axis = 1)
+        print(outputsdata[0])
+        print("Result length", len(outputsdata[0]))
+        print ("Output length", len(outputsdata))
+        maxConfidence = np.zeros(len(outputsdata))
+        np.amax(outputsdata, out = maxConfidence, axis = 1)
         print ("maxConfidence", len(maxConfidence))
         bins_0 = numpy.linspace(0, 0.001, 1)
         counts = numpy.histogram(maxConfidence, bins_0)

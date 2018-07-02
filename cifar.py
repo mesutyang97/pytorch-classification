@@ -20,6 +20,9 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import models.cifar as models
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 from utils import Bar, Logger, AverageMeter, accuracy, mkdir_p, savefig
 
 
@@ -314,6 +317,22 @@ def test(testloader, model, criterion, epoch, use_cuda):
 
         # compute output
         outputs = model(inputs)
+        # Experiment:
+        print("Hey")
+        print(outputs.data[0])
+        print ("Output length", len(outputs.data))
+        maxConfidence = np.amax(outputs.data)
+        print ("maxConfidence", len(maxConfidence))
+        bins_0 = numpy.linspace(0, 0.001, 1)
+        counts = numpy.histogram(maxConfidence, bins_0)
+
+        if epoch == 2:
+            plt.hist(maxConfidence, bins=bins_0)
+            plt.title("Distribution of max confidence for {} at {}".format(epoch, time.time()))
+            plt.show()
+
+
+
         loss = criterion(outputs, targets)
 
         # measure accuracy and record loss

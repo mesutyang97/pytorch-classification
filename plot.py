@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 
 # Base_PATH = "../code/ts/cifar/checkpoints/"
 Base_PATH = "checkpoints/{}/{}_{}/log.txt"
+BaseIS_PATH = "checkpoints/{}/{}_{}/log-initScale.txt"
 Graph_PATH = "graph"
 TEMPS = [0.1, 0.3, 1, 3, 10, 30]
 
@@ -19,7 +20,7 @@ COLORS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10/100 Result Plotting')
 # Datasets
-parser.add_argument('-d', '--dataset', default='cifar10', type=str)
+parser.add_argument('-d', '--dataset', default='cifar100', type=str)
 
 # Architecture
 parser.add_argument('--arch', '-a', default='vgg19_bn', type=str)
@@ -46,6 +47,23 @@ def trainingCurve(dataset, arch):
 
 			plt.plot(range(trainsize), vali_error, '-', color=COLORS[i],
 	             label="vali_error error with temp {}".format(temp))
+
+		# Initial scaling
+		if temp != 1:
+			with open(BaseIS_PATH.format(dataset, arch, temp)) as f:
+				print("HERE")
+				lines = (line.rstrip() for line in f)
+				Data = np.loadtxt(lines, delimiter='\t', skiprows=1).transpose()
+				train_error = np.subtract(100, Data[3])
+				vali_error = np.subtract(100, Data[4])
+				trainsize = len(train_error)
+
+				plt.plot(range(trainsize), train_error, '-.', color=COLORS[i],
+		             label="With IS, Training error with temp {}".format(temp))
+
+				plt.plot(range(trainsize), vali_error, '--', color=COLORS[i],
+		             label="With IS, vali_error error with temp {}".format(temp))
+
 
 	filename = 'training_curve-{}-{}-{}.png'.format(
         dataset, arch, time.time())
@@ -108,6 +126,22 @@ def trainingCurveZoomed(dataset, arch):
 			plt.plot(range(trainsize), vali_error, '-', color=COLORS[i],
 	             label="vali_error error with temp {}".format(temp))
 
+				# Initial scaling
+		if temp != 1:
+			with open(BaseIS_PATH.format(dataset, arch, temp)) as f:
+				print("HERE")
+				lines = (line.rstrip() for line in f)
+				Data = np.loadtxt(lines, delimiter='\t', skiprows=1).transpose()
+				train_error = np.subtract(100, Data[3])
+				vali_error = np.subtract(100, Data[4])
+				trainsize = len(train_error)
+
+				plt.plot(range(trainsize), train_error, '-.', color=COLORS[i],
+		             label="With IS, Training error with temp {}".format(temp))
+
+				plt.plot(range(trainsize), vali_error, '--', color=COLORS[i],
+		             label="With IS, vali_error error with temp {}".format(temp))
+
 	filename = 'training_curve_zoommed-{}-{}-{}.png'.format(
         dataset, arch, time.time())
 	axes = plt.gca()
@@ -120,8 +154,8 @@ def main():
 	if args.arch == 'densenet-bc-100-12':
 		trainsize = 300
 	#errorCurve(args.dataset, args.arch, trainsize)
-	#trainingCurve(args.dataset, args.arch)
-	trainingCurveZoomed(args.dataset, args.arch)
+	trainingCurve(args.dataset, args.arch)
+	# trainingCurveZoomed(args.dataset, args.arch)
 
 if __name__ == '__main__':
     main()

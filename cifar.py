@@ -318,7 +318,7 @@ def test(testloader, model, criterion, epoch, use_cuda):
         # compute output
         outputs = model(inputs)
         # Experiment:
-        outputsdata = output.data.numpy()
+        outputsdata = outputs.data.numpy()
         print("Hey")
         print(outputsdata[0])
         print("Result length", len(outputsdata[0]))

@@ -322,6 +322,7 @@ def test(testloader, model, criterion, epoch, use_cuda):
         print(outputs.data[0])
         print("Result length", len(outputs.data[0]))
         print ("Output length", len(outputs.data))
+        maxConfidence = numpy.zeros(len(outputs.data))
         np.amax(outputs.data, out = maxConfidence, axis = 1)
         print ("maxConfidence", len(maxConfidence))
         bins_0 = numpy.linspace(0, 0.001, 1)
